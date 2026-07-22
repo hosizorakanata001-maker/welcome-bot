@@ -1,0 +1,37 @@
+import os
+import discord
+from discord.ext import commands
+
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+
+@bot.event
+async def on_ready():
+    print(f"ログインしました: {bot.user.name}")
+
+
+@bot.event
+async def on_member_join(member):
+    guild = member.guild
+    member_count = guild.member_count
+    welcome_message = (
+        f"ようこそ！{member.mention}\n貴方は{member_count}人目のメンバーです"
+    )
+
+    target_channel = guild.system_channel
+    if target_channel is None:
+        for channel in guild.text_channels:
+            if channel.permissions_for(guild.me).send_messages:
+                target_channel = channel
+                break
+
+    if target_channel:
+        await target_channel.send(welcome_message)
+
+
+token = os.environ.get("DISCORD_TOKEN")
+bot.run(token)
