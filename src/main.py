@@ -1,6 +1,8 @@
 import os
 from threading import Thread
 from flask import Flask
+import discord
+from discord.ext import commands
 
 app = Flask("")
 
@@ -35,7 +37,7 @@ async def on_ready():
 @bot.event
 async def on_member_join(member):
     guild = member.guild
-    me_channel
+    target_channel = None  # ここも綺麗に直しといたよ！
     if target_channel is None:
         for channel in guild.text_channels:
             if channel.permissions_for(guild.me).send_messages:
@@ -43,5 +45,8 @@ async def on_member_join(member):
                 break
 
     if target_channel:
-        await target_channel.send(welcom
-bot.run(token) 
+        await target_channel.send("ようこそ！")
+
+
+keep_alive()
+bot.run(token)
