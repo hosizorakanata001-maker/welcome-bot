@@ -1,6 +1,24 @@
 import os
-import discord
-from discord.ext import commands
+from threading import Thread
+from flask import Flask
+
+app = Flask("")
+
+
+@app.route("/")
+def home():
+    return "I am alive!"
+
+
+def run():
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
+
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
+
 
 intents = discord.Intents.default()
 intents.members = True
@@ -17,12 +35,7 @@ async def on_ready():
 @bot.event
 async def on_member_join(member):
     guild = member.guild
-    member_count = guild.member_count
-    welcome_message = (
-        f"ようこそ！{member.mention}\n貴方は{member_count}人目のメンバーです"
-    )
-
-    target_channel = guild.system_channel
+    me_channel
     if target_channel is None:
         for channel in guild.text_channels:
             if channel.permissions_for(guild.me).send_messages:
@@ -30,8 +43,5 @@ async def on_member_join(member):
                 break
 
     if target_channel:
-        await target_channel.send(welcome_message)
-
-
-token = os.environ.get("DISCORD_TOKEN")
+        await target_channel.send(welcom
 bot.run(token) 
